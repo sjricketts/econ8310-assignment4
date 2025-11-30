@@ -15,3 +15,6 @@ control_1 = control["retention_1"].values
 control_7 = control["retention_7"].values
 test_1 = test["retention_1"].values
 test_7 = test["retention_7"].values 
+
+# PyMC model
+with pm.Model() as model:
