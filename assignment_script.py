@@ -36,3 +36,33 @@ with model:
 with model:
   # take samples
   trace = pm.sample(draws=2000, tune=2000, target_accept=0.95, random_seed=311)
+
+
+# create function
+def bayesian_ab(obs_control, obs_test):
+  
+  # PyMC model
+  with pm.Model() as model:
+    
+    # priors that are not known
+    p_control = pm.Beta("p_control", alpha=1, beta=1)
+    p_test = pm.Beta("p_test", alpha=1, beta=1)
+    
+    # Bernoulli probabilities
+    obs_control = pm.Bernoulli("obs_control",p=p_control, observed=control_1)
+    obs_test = pm.Bernoulli("obs_test",p=p_test, observed=test_1)
+
+    # differences
+    diff_raw = pm.Deterministic("diff_raw", p_test - p_control)
+    diff_percent = pm.Deterministic("diff_percent", (p_test - p_control) / p_control)
+
+    # samples
+    trace = pm.sample(draws=2000, tune=2000, target_accept=0.95, random_seed=311, return_inferencedata=False)
+  
+  return model, trace
+
+# call function for 1 day rentention
+retention1_mod, retention1_trace = bayesian_ab(control_1, test_1)
+
+# call function for 7 day retention
+retention7_mod, retention7_trace = bayesian_ab(control_7, test_7)
