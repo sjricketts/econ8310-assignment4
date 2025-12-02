@@ -28,3 +28,11 @@ with model:
   obs_control = pm.Bernoulli("obs_control",p=p_control, observed=control_1)
   obs_test = pm.Bernoulli("obs_test",p=p_test, observed=test_1)
 
+with model:
+  # differences
+  diff_raw = pm.Deterministic("diff_raw", p_test - p_control)
+  diff_percent = pm.Deterministic("diff_percent", (p_test - p_control) / p_control)
+
+with model:
+  # take samples
+  trace = pm.sample(draws=2000, tune=2000, target_accept=0.95, random_seed=311)
