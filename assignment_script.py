@@ -17,25 +17,25 @@ test_1 = test["retention_1"].values
 test_7 = test["retention_7"].values 
 
 # PyMC model
-with pm.Model() as model:
-  # priors that are not known
-  p_control = pm.Beta("p_control", alpha=1, beta=1)
-  p_test = pm.Beta("p_test", alpha=1, beta=1)
+# with pm.Model() as model:
+#   # priors that are not known
+#   p_control = pm.Beta("p_control", alpha=1, beta=1)
+#   p_test = pm.Beta("p_test", alpha=1, beta=1)
 
-with model:
-  # use Bernoulli for probabilities
-  # maybe should be binomial instead???
-  obs_control = pm.Bernoulli("obs_control",p=p_control, observed=control_1)
-  obs_test = pm.Bernoulli("obs_test",p=p_test, observed=test_1)
+# with model:
+#   # use Bernoulli for probabilities
+#   # maybe should be binomial instead???
+#   obs_control = pm.Bernoulli("obs_control",p=p_control, observed=control_1)
+#   obs_test = pm.Bernoulli("obs_test",p=p_test, observed=test_1)
 
-with model:
-  # differences
-  diff_raw = pm.Deterministic("diff_raw", p_test - p_control)
-  diff_percent = pm.Deterministic("diff_percent", (p_test - p_control) / p_control)
+# with model:
+#   # differences
+#   diff_raw = pm.Deterministic("diff_raw", p_test - p_control)
+#   diff_percent = pm.Deterministic("diff_percent", (p_test - p_control) / p_control)
 
-with model:
-  # take samples
-  trace = pm.sample(draws=2000, tune=2000, target_accept=0.95, random_seed=311)
+# with model:
+#   # take samples
+#   trace = pm.sample(draws=2000, tune=2000, target_accept=0.95, random_seed=311)
 
 
 # create function
@@ -66,3 +66,9 @@ retention1_mod, retention1_trace = bayesian_ab(control_1, test_1)
 
 # call function for 7 day retention
 retention7_mod, retention7_trace = bayesian_ab(control_7, test_7)
+
+retention1_trace["p_control"]
+retention1_trace["p_control"].mean()
+retention1_trace["p_test"].mean()
+retention1_trace["diff_percent"].mean()
+retention1_trace["diff_raw"].mean()
