@@ -75,6 +75,7 @@ print("test: ", retention1_trace["p_test"].mean())
 print("raw difference: ",retention1_trace["diff_raw"].mean())
 print("percent difference: ",retention1_trace["diff_percent"].mean())
 
+
 # create function for 7 day
 def ab_7(obs_control, obs_test):
 
@@ -97,3 +98,9 @@ def ab_7(obs_control, obs_test):
     trace = pm.sample(draws=2000, tune=2000, target_accept=0.95, random_seed=311, return_inferencedata=False)
 
 retention7_mod, retention7_trace = ab_7(control_7, test_7)
+
+# retention7_trace["p_control"].mean()
+print("control: ", retention7_trace["p_control"].mean())
+print("test: ", retention7_trace["p_test"].mean())
+print("raw difference: ",retention7_trace["diff_raw"].mean())
+print("percent difference: ",retention7_trace["diff_percent"].mean())
