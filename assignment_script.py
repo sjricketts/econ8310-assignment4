@@ -35,7 +35,7 @@ def ab_1(obs_control, obs_test):
     diff_percent = pm.Deterministic("diff_percent", (p_test - p_control) / p_control)
 
     # samples
-    trace = pm.sample(draws=2000, tune=2000, target_accept=0.95, random_seed=311, return_inferencedata=False)
+    trace = pm.sample(draws=2000, tune=2000, chains=4, target_accept=0.95, random_seed=311, return_inferencedata=False)
 
   return model, trace
 
@@ -43,6 +43,7 @@ def ab_1(obs_control, obs_test):
 retention1_mod, retention1_trace = ab_1(control_1, test_1)
 
 # print results
+print("Retention for 1 Day\n")
 print("control: ", retention1_trace["p_control"].mean())
 print("test: ", retention1_trace["p_test"].mean())
 print("raw difference: ",retention1_trace["diff_raw"].mean())
@@ -67,7 +68,7 @@ def ab_7(obs_control, obs_test):
     diff_percent = pm.Deterministic("diff_percent", (p_test - p_control) / p_control)
 
     # samples
-    trace = pm.sample(draws=2000, tune=2000, target_accept=0.95, random_seed=311, return_inferencedata=False)
+    trace = pm.sample(draws=2000, tune=2000, chains=4, target_accept=0.95, random_seed=311, return_inferencedata=False)
 
   return model, trace
 
